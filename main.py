@@ -1,13 +1,6 @@
+"""开发入口：以随机端口启动可观测 HTTP 服务。"""
 import uvicorn
-from fastapi import FastAPI
-
-app = FastAPI()
-
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=0)
+    uvicorn.run("app.main:app", host="127.0.0.1", port=0)
