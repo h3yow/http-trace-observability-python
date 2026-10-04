@@ -61,6 +61,17 @@ class AppError(Exception):
         super().__init__(self.public_message)
 
 
+def category_for_status(status_code: int) -> ErrorCategory | None:
+    """按状态码推断错误类别（用于未抛异常的错误响应）；2xx/3xx 返回 None。"""
+    if status_code < 400:
+        return None
+    if status_code == 404:
+        return ErrorCategory.NOT_FOUND
+    if status_code < 500:
+        return ErrorCategory.VALIDATION
+    return ErrorCategory.INTERNAL
+
+
 def classify(exc: BaseException) -> ClassifiedError:
     """将任意异常归一化为可对外暴露的错误视图，内部细节不透出。"""
     if isinstance(exc, AppError):
